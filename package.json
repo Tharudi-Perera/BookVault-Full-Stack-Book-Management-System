@@ -1,0 +1,21 @@
+{
+  "name": "bookvault-full-stack-book-management-system",
+  "version": "1.0.0",
+  "description": "A full-stack web application built with Angular and ASP.NET Core that allows users to perform CRUD operations (Create, Read, Update, Delete) on books through a RESTful API using an in-memory data store.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tharudi-Perera/BookVault-Full-Stack-Book-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tharudi-Perera/BookVault-Full-Stack-Book-Management-System/issues"
+  },
+  "homepage": "https://github.com/Tharudi-Perera/BookVault-Full-Stack-Book-Management-System#readme"
+}

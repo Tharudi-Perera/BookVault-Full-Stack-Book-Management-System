@@ -1,0 +1,100 @@
+<div class="container">
+<nav class="navbar">
+  <div class="logo">📚 BookVault</div>
+</nav>
+
+  <h1>Book Manager</h1>
+
+  <!-- Book form -->
+  <div class="form-container">
+    <h2>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          [(ngModel)]="currentBook.title"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="author">Author</label>
+        <input
+          id="author"
+          name="author"
+          type="text"
+          [(ngModel)]="currentBook.author"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <input
+          id="isbn"
+          name="isbn"
+          type="text"
+          [(ngModel)]="currentBook.isbn"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="publicationDate">Publication Date</label>
+        <input
+          id="publicationDate"
+          name="publicationDate"
+          type="date"
+          [(ngModel)]="currentBook.publicationDate"
+          required
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="bookForm.invalid">
+          {{ isEditMode ? 'Update' : 'Add' }} Book
+        </button>
+        <button type="button" (click)="resetForm()" *ngIf="isEditMode">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Book list -->
+  <div class="list-container">
+    <h2>Books</h2>
+
+    <table *ngIf="books && books.length > 0; else noBooks">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Publication Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.publicationDate | date: 'yyyy-MM-dd' }}</td>
+          <td>
+            <button (click)="editBook(book)">Edit</button>
+            <button (click)="deleteBook(book)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noBooks>
+      <p>No books available. Add one using the form above.</p>
+    </ng-template>
+  </div>
+</div>

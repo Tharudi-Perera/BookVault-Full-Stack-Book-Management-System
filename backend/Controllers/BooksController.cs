@@ -43,6 +43,12 @@ namespace Backend.Controllers
         [HttpPost]
         public ActionResult<Book> Create(Book book)
         {
+            // Check for duplicate ISBN
+            var existing = _bookService.GetAllBooks().FirstOrDefault(b => b.Isbn == book.Isbn);
+            if (existing != null)
+            {
+                return Conflict(new { message = "A book with this ISBN already exists." });
+            }
             var created = _bookService.CreateBook(book);
             // Returns 201 Created with location header
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);

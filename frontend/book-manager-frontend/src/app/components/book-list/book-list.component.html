@@ -1,100 +1,213 @@
-<div class="container">
-<nav class="navbar">
-  <div class="logo">📚 BookVault</div>
-</nav>
-
-  <h1>Book Manager</h1>
-
-  <!-- Book form -->
-  <div class="form-container">
-    <h2>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h2>
-
-    <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          [(ngModel)]="currentBook.title"
-          required
-        />
+<div class="app-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+        </svg>
       </div>
+      <span class="brand-name">BookVault</span>
+    </div>
 
-      <div class="form-group">
-        <label for="author">Author</label>
-        <input
-          id="author"
-          name="author"
-          type="text"
-          [(ngModel)]="currentBook.author"
-          required
-        />
+    <nav class="sidebar-nav">
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
+        </svg>
+        <span>Library</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+        </svg>
+        <span>Favourites</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
+          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-stats">
+      <div class="stat-card">
+        <span class="stat-number">{{ books.length }}</span>
+        <span class="stat-label">Total Books</span>
       </div>
+    </div>
+  </aside>
 
-      <div class="form-group">
-        <label for="isbn">ISBN</label>
-        <input
-          id="isbn"
-          name="isbn"
-          type="text"
-          [(ngModel)]="currentBook.isbn"
-          required
-        />
+  <!-- Main content -->
+  <main class="main-content">
+    <header class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">My Library</h1>
+        <p class="page-subtitle">Manage and organize your book collection</p>
       </div>
+      <button class="btn-add-toggle" (click)="toggleForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4.5v15m7.5-7.5h-15"/>
+        </svg>
+        Add Book
+      </button>
+    </header>
 
-      <div class="form-group">
-        <label for="publicationDate">Publication Date</label>
-        <input
-          id="publicationDate"
-          name="publicationDate"
-          type="date"
-          [(ngModel)]="currentBook.publicationDate"
-          required
-        />
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" [disabled]="bookForm.invalid">
-          {{ isEditMode ? 'Update' : 'Add' }} Book
+    <!-- Collapsible Form Panel -->
+    <div class="form-panel" [class.expanded]="showForm || isEditMode">
+      <div class="form-panel-header">
+        <h2>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h2>
+        <button class="btn-close" (click)="resetForm()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 18L18 6M6 6l12 12"/>
+          </svg>
         </button>
-        <button type="button" (click)="resetForm()" *ngIf="isEditMode">
-          Cancel
-        </button>
       </div>
-    </form>
-  </div>
 
-  <!-- Book list -->
-  <div class="list-container">
-    <h2>Books</h2>
+      <form (ngSubmit)="onSubmit()" #bookForm="ngForm" class="book-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" [(ngModel)]="currentBook.title"
+              placeholder="Enter book title" required maxlength="100" #titleInput="ngModel"/>
+               <div class="validation-error" *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)">
+                 <span *ngIf="titleInput.errors?.['required']">Title is required.</span>
+                 <span *ngIf="titleInput.errors?.['maxlength']">Title cannot exceed 100 characters.</span>
+               </div>
+          </div>
+          <div class="form-field">
+            <label for="author">Author</label>
+            <input id="author" name="author" type="text" [(ngModel)]="currentBook.author"
+              placeholder="Enter author name" required maxlength="100" #authorInput="ngModel"/>
+               <div class="validation-error" *ngIf="authorInput.invalid && (authorInput.dirty || authorInput.touched)">
+                 <span *ngIf="authorInput.errors?.['required']">Author is required.</span>
+                 <span *ngIf="authorInput.errors?.['maxlength']">Author name cannot exceed 100 characters.</span>
+               </div>
+          </div>
+          <div class="form-field">
+            <label for="isbn">ISBN</label>
+            <input id="isbn" name="isbn" type="text" [(ngModel)]="currentBook.isbn"
+              placeholder="Enter ISBN" required maxlength="13" pattern="^(978|979)\d{10}$" #isbnInput="ngModel"
+              (ngModelChange)="checkIsbnUnique(currentBook.isbn)" />
+            <div class="validation-error" *ngIf="isbnInput.invalid && (isbnInput.dirty || isbnInput.touched)">
+              <span *ngIf="isbnInput.errors?.['required']">ISBN is required.</span>
+              <span *ngIf="isbnInput.errors?.['pattern']">Please enter a valid ISBN (13 digits starting with 978 or 979).</span>
+            </div>
+            <div class="validation-error" *ngIf="isbnExists">
+              <span>This ISBN already exists in your library.</span>
+            </div>
+          </div> 
+          
+          
+          <div class="form-field">
+          <label for="publicationDate">Publication Date</label>
+          <input id="publicationDate" name="publicationDate" type="date"
+             [(ngModel)]="currentBook.publicationDate" required [max]="todayString"
+              #pubDateInput="ngModel"
+              [ngModelOptions]="{ updateOn: 'blur' }"
+             (ngModelChange)="pubDateInput.control.setErrors(validatePublicationDate(pubDateInput))"/>
+          <div class="validation-error" *ngIf="pubDateInput.invalid && (pubDateInput.dirty || pubDateInput.touched)">
+              <span *ngIf="pubDateInput.errors?.['required']">Publication date is required.</span>
+              <span *ngIf="pubDateInput.errors?.['max']">Publication date cannot be in the future.</span>
+          </div>
+         </div>
 
-    <table *ngIf="books && books.length > 0; else noBooks">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>ISBN</th>
-          <th>Publication Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let book of books">
-          <td>{{ book.title }}</td>
-          <td>{{ book.author }}</td>
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.publicationDate | date: 'yyyy-MM-dd' }}</td>
-          <td>
-            <button (click)="editBook(book)">Edit</button>
-            <button (click)="deleteBook(book)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="bookForm.invalid || isbnExists">
+            {{ isEditMode ? 'Update Book' : 'Add to Library' }}
+          </button>
+        </div>
+      </form>
+    </div>
 
-    <ng-template #noBooks>
-      <p>No books available. Add one using the form above.</p>
-    </ng-template>
-  </div>
+    <!-- Books Table -->
+    <div class="books-section">
+      <div class="section-header">
+        <h2>All Books</h2>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+          </svg>
+          <input type="text" placeholder="Search books..."/>
+        </div>
+      </div>
+
+      <div class="table-wrapper" *ngIf="books && books.length > 0; else noBooks">
+        <table class="books-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>ISBN</th>
+              <th>Published</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of books; let i = index" class="book-row">
+              <td class="row-num">{{ i + 1 }}</td>
+              <td class="book-title-cell">
+                <div class="book-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z"/>
+                  </svg>
+                </div>
+                {{ book.title }}
+              </td>
+              <td>{{ book.author }}</td>
+              <td class="isbn-cell">{{ book.isbn }}</td>
+              <td>{{ book.publicationDate | date: 'MMM d, yyyy' }}</td>
+              <td class="actions-cell">
+                <button class="btn-edit" (click)="editBook(book)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/>
+                  </svg>
+                  Edit
+                </button>
+                  <button class="btn-delete" (click)="openDeleteModal(book)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                  </svg>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #noBooks>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+            </svg>
+          </div>
+          <h3>No books yet</h3>
+          <p>Start building your library by adding your first book</p>
+          <button class="btn-primary" (click)="toggleForm()">Add Your First Book</button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div class="modal-backdrop" *ngIf="showDeleteModal">
+      <div class="modal">
+        <h3>Delete Book</h3>
+        <p>Are you sure you want to delete <strong>{{ bookToDelete?.title }}</strong>?</p>
+
+        <div class="modal-actions">
+          <button class="btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+          <button class="btn-primary danger" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
 </div>

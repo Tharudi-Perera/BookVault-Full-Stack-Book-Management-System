@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BookVault – Project Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --accent: #7c6af7;
+    --accent2: #e879a0;
+    --accent3: #38d9a9;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --danger: #f05a7e;
+    --success: #38d9a9;
+    --warn: #f7c948;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 30%, rgba(124,106,247,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 70%, rgba(232,121,160,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 100%, rgba(56,217,169,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(124,106,247,0.3);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    display: inline-block;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 20px auto 40px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 52px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted);
+  }
+
+  .pill.accent { border-color: rgba(124,106,247,0.4); color: var(--accent); }
+  .pill.accent2 { border-color: rgba(232,121,160,0.4); color: var(--accent2); }
+
+  .hero-cta {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #8d7df9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,106,247,0.35); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 600px;
+    margin-bottom: 60px;
+    font-weight: 300;
+  }
+
+  /* ── ABOUT GRID ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover { border-color: rgba(124,106,247,0.4); transform: translateY(-2px); }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 14px;
+  }
+
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── ARCHITECTURE ── */
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 40px 0;
+  }
+
+  .arch-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 160px;
+  }
+
+  .arch-box .arch-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .arch-box .arch-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .arch-box.accent-box { border-color: rgba(124,106,247,0.5); background: rgba(124,106,247,0.08); }
+  .arch-box.accent-box .arch-name { color: var(--accent); }
+  .arch-box.accent2-box { border-color: rgba(232,121,160,0.5); background: rgba(232,121,160,0.08); }
+  .arch-box.accent2-box .arch-name { color: var(--accent2); }
+  .arch-box.accent3-box { border-color: rgba(56,217,169,0.5); background: rgba(56,217,169,0.08); }
+  .arch-box.accent3-box .arch-name { color: var(--accent3); }
+
+  .arch-arrow {
+    font-size: 20px;
+    color: var(--muted);
+    padding: 0 12px;
+  }
+
+  /* ── FEATURES GRID ── */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .feat-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+
+  .feat-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .feat-dot.d2 { background: var(--accent2); }
+  .feat-dot.d3 { background: var(--accent3); }
+  .feat-dot.d4 { background: var(--warn); }
+
+  .feat-item p { font-size: 14px; font-weight: 400; }
+  .feat-item span { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  /* ── VALIDATION TABLE ── */
+  .val-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .val-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .val-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+
+  .val-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    display: inline-block;
+  }
+
+  .badge-err { background: rgba(240,90,126,0.15); color: var(--danger); border: 1px solid rgba(240,90,126,0.3); }
+  .badge-ok { background: rgba(56,217,169,0.12); color: var(--success); border: 1px solid rgba(56,217,169,0.3); }
+  .badge-warn { background: rgba(247,201,72,0.12); color: var(--warn); border: 1px solid rgba(247,201,72,0.3); }
+
+  /* ── LIVE DEMO ── */
+  #demo {
+    padding: 100px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  #demo .inner { padding: 0 24px; }
+
+  .demo-wrapper {
+    margin-top: 48px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #0d0d15;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 620px;
+  }
+
+  /* Sidebar */
+  .demo-sidebar {
+    background: #0c0c14;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    display: flex; flex-direction: column;
+  }
+
+  .demo-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .demo-brand .icon { font-size: 20px; }
+
+  .demo-nav {
+    padding: 16px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+    flex: 1;
+  }
+
+  .demo-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .demo-nav-item.active {
+    background: rgba(124,106,247,0.12);
+    color: var(--accent);
+  }
+
+  .demo-nav-item:hover:not(.active) { background: rgba(255,255,255,0.04); color: var(--text); }
+
+  .demo-sidebar-footer {
+    margin: 12px;
+    background: rgba(124,106,247,0.08);
+    border: 1px solid rgba(124,106,247,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .demo-sidebar-footer .count {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .demo-sidebar-footer .label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Main area */
+  .demo-main {
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  .demo-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .demo-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+  }
+
+  .demo-header p { font-size: 13px; color: var(--muted); margin-top: 2px; font-weight: 300; }
+
+  .demo-add-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .demo-add-btn:hover { background: #8d7df9; transform: translateY(-1px); }
+
+  /* Form panel */
+  .demo-form-panel {
+    margin: 20px 28px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    opacity: 0;
+  }
+
+  .demo-form-panel.open { max-height: 500px; opacity: 1; }
+
+  .form-panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .form-panel-header h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .form-close {
+    background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer;
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    border-radius: 6px; transition: background 0.15s;
+  }
+
+  .form-close:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+  .form-body { padding: 20px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .form-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .form-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+  .form-input.error { border-color: var(--danger); }
+
+  .form-error {
+    font-size: 12px;
+    color: var(--danger);
+    display: none;
+    font-weight: 400;
+  }
+
+  .form-error.show { display: block; }
+
+  .form-actions {
+    display: flex; gap: 10px; justify-content: flex-end; padding-top: 8px;
+  }
+
+  .btn-cancel {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); padding: 9px 20px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-cancel:hover { border-color: var(--muted); }
+
+  .btn-submit {
+    background: var(--accent); color: #fff; border: none;
+    padding: 9px 20px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-submit:hover { background: #8d7df9; }
+
+  /* Books table */
+  .books-area {
+    flex: 1;
+    overflow: auto;
+    padding: 0 28px 28px;
+  }
+
+  .books-table-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px; padding-top: 20px;
+  }
+
+  .books-table-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .search-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.15s;
+  }
+
+  .search-box:focus { border-color: var(--accent); }
+
+  .books-table { width: 100%; border-collapse: collapse; }
+
+  .books-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .books-table td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .books-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .book-icon {
+    width: 28px; height: 28px;
+    background: rgba(124,106,247,0.15);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .book-title-cell { display: flex; align-items: center; gap: 10px; }
+
+  .isbn-mono { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+
+  .action-btns { display: flex; gap: 6px; }
+
+  .btn-edit, .btn-delete {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+
+  .btn-edit { background: rgba(124,106,247,0.15); color: var(--accent); }
+  .btn-edit:hover { background: rgba(124,106,247,0.25); }
+
+  .btn-delete { background: rgba(240,90,126,0.12); color: var(--danger); }
+  .btn-delete:hover { background: rgba(240,90,126,0.22); }
+
+  /* Toast */
+  .toast-container {
+    position: fixed; top: 24px; right: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 9999;
+  }
+
+  .toast {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 10px;
+    max-width: 300px;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .toast.success { border-color: rgba(56,217,169,0.4); }
+  .toast.error { border-color: rgba(240,90,126,0.4); }
+  .toast.warn { border-color: rgba(247,201,72,0.4); }
+
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .toast.success .toast-dot { background: var(--success); }
+  .toast.error .toast-dot { background: var(--danger); }
+  .toast.warn .toast-dot { background: var(--warn); }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Delete Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.2s;
+  }
+
+  .modal-overlay.open .modal { transform: scale(1); }
+
+  .modal-icon { font-size: 36px; margin-bottom: 16px; }
+
+  .modal h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .modal p { font-size: 14px; color: var(--muted); margin-bottom: 24px; font-weight: 300; }
+
+  .modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+  .btn-modal-cancel {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); padding: 10px 24px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-modal-cancel:hover { border-color: var(--muted); }
+
+  .btn-modal-delete {
+    background: var(--danger); color: #fff; border: none;
+    padding: 10px 24px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-modal-delete:hover { background: #f26a87; }
+
+  /* Row highlight anim */
+  @keyframes rowFlash {
+    0% { background: rgba(124,106,247,0.2); }
+    100% { background: transparent; }
+  }
+
+  .row-new td { animation: rowFlash 1.2s ease; }
+
+  /* ── DEMO GUIDE ── */
+  .guide-wrap {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .guide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .guide-step {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .guide-card h4 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .guide-card p { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  /* ── STACK SECTION ── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .stack-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .stack-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .stack-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+
+  .stack-item:last-child { border-bottom: none; }
+
+  .stack-item .name { font-weight: 400; }
+  .stack-item .purpose { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  footer strong { color: var(--text); font-weight: 500; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+    max-width: 1100px;
+  }
+
+  @media (max-width: 700px) {
+    .demo-wrapper { grid-template-columns: 1fr; }
+    .demo-sidebar { display: none; }
+    .stack-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-icon">🗑️</div>
+    <h3>Delete Book?</h3>
+    <p id="modalBookTitle">Are you sure you want to remove this book from your library? This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal-delete" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <span class="hero-tag">Full‑Stack Project · 2025</span>
+  <h1>Book<span>Vault</span></h1>
+  <p class="hero-sub">A production-grade book management system built with Angular 17 & ASP.NET Core Web API</p>
+  <div class="tech-pills">
+    <span class="pill accent">Angular 17</span>
+    <span class="pill accent2">ASP.NET Core</span>
+    <span class="pill">TypeScript</span>
+    <span class="pill">C#</span>
+    <span class="pill">REST API</span>
+    <span class="pill">Swagger / OpenAPI</span>
+    <span class="pill">RxJS</span>
+  </div>
+  <div class="scroll-hint">▾ scroll</div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-label">What I Built</div>
+  <h2 class="section-title">A complete CRUD system,<br>from scratch.</h2>
+  <p class="section-desc">BookVault demonstrates end-to-end full-stack development — a standalone Angular frontend consuming a RESTful ASP.NET Core API, connected seamlessly with clean component architecture and real-time form validation.</p>
+
+  <div class="about-grid">
+    <div class="card">
+      <div class="card-icon">🧱</div>
+      <h3>Standalone Architecture</h3>
+      <p>Used Angular 17 standalone components instead of NgModules — the modern, recommended approach that reduces boilerplate and improves tree-shaking.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>RESTful API Design</h3>
+      <p>The backend exposes clean GET, POST, PUT, DELETE endpoints following REST conventions, documented interactively through Swagger / OpenAPI.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Validation on Both Ends</h3>
+      <p>Client-side real-time validation with Angular's ReactiveFormsModule prevents bad data before it's sent. The API independently validates before processing.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎨</div>
+      <h3>Custom UI — Zero Libraries</h3>
+      <p>No Bootstrap, no Material. The entire dark-themed UI — sidebar, animated form panel, custom modal — is hand-crafted with pure CSS3.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>Service-Based API Layer</h3>
+      <p>Angular services abstract all HTTP calls using RxJS Observables, keeping components clean and making the API layer fully reusable and testable.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Production-Ready Patterns</h3>
+      <p>Strong TypeScript interfaces, consistent naming conventions, no direct DOM manipulation, and a custom confirmation modal replacing native browser dialogs.</p>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section-label" style="margin-top:60px;">Architecture</div>
+  <h2 class="section-title" style="font-size:clamp(22px,3vw,32px);">How the system fits together</h2>
+  <div class="arch-flow">
+    <div class="arch-box accent-box">
+      <div class="arch-label">Frontend</div>
+      <div class="arch-name">Angular 17</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">
+      <div class="arch-label">Transport</div>
+      <div class="arch-name">HTTP / REST</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box accent2-box">
+      <div class="arch-label">Backend</div>
+      <div class="arch-name">ASP.NET Core</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box accent3-box">
+      <div class="arch-label">Data Store</div>
+      <div class="arch-name">In-Memory List</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FEATURES ── -->
+<section id="features">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">Everything it can do</h2>
+  <p class="section-desc">Every feature was built with UX clarity and code quality in mind — no shortcuts.</p>
+
+  <div class="feat-grid">
+    <div class="feat-item">
+      <div class="feat-dot"></div>
+      <div><p>Add New Books</p><span>Title, Author, ISBN, Publication Date</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot"></div>
+      <div><p>Edit Existing Books</p><span>Pre-populated form, real-time update</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot d2"></div>
+      <div><p>Delete with Confirmation</p><span>Custom modal — no browser confirm()</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot d3"></div>
+      <div><p>View All Books</p><span>Styled table, auto-refresh after changes</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot d4"></div>
+      <div><p>Search Books</p><span>Live filter across title and author</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot d2"></div>
+      <div><p>Sidebar Navigation</p><span>Library, Favourites, Settings</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot"></div>
+      <div><p>Animated Form Panel</p><span>Smooth collapsible reveal on demand</span></div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-dot d3"></div>
+      <div><p>Swagger Docs</p><span>Interactive API explorer at /swagger</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── VALIDATIONS ── -->
+<section id="validations">
+  <div class="section-label">Form Validation</div>
+  <h2 class="section-title">Every edge case, handled.</h2>
+  <p class="section-desc">The form validates in real-time before submission. Try each of these in the live demo below.</p>
+
+  <table class="val-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Rule</th>
+        <th>Behaviour</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Title</strong></td>
+        <td>Required</td>
+        <td>Submit with empty title</td>
+        <td><span class="badge badge-err">Error shown</span></td>
+      </tr>
+      <tr>
+        <td><strong>Title</strong></td>
+        <td>Max 200 chars</td>
+        <td>Title exceeds character limit</td>
+        <td><span class="badge badge-err">Error shown</span></td>
+      </tr>
+      <tr>
+        <td><strong>Author</strong></td>
+        <td>Required</td>
+        <td>Submit with empty author</td>
+        <td><span class="badge badge-err">Error shown</span></td>
+      </tr>
+      <tr>
+        <td><strong>ISBN</strong></td>
+        <td>Duplicate check</td>
+        <td>Add a book with an existing ISBN</td>
+        <td><span class="badge badge-warn">Rejected — ISBN exists</span></td>
+      </tr>
+      <tr>
+        <td><strong>Publication Date</strong></td>
+        <td>No future dates</td>
+        <td>Pick a date beyond today</td>
+        <td><span class="badge badge-err">Error shown</span></td>
+      </tr>
+      <tr>
+        <td><strong>Publication Date</strong></td>
+        <td>Valid format</td>
+        <td>Leave field empty or invalid</td>
+        <td><span class="badge badge-err">Error shown</span></td>
+      </tr>
+      <tr>
+        <td><strong>All fields</strong></td>
+        <td>Clean submit</td>
+        <td>All valid data provided</td>
+        <td><span class="badge badge-ok">Book added ✓</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── LIVE DEMO ── -->
+<section id="demo">
+  <div class="section-label">Interactive Demo</div>
+  <h2 class="section-title">Try it yourself — live.</h2>
+  <p class="section-desc">This is a fully functional simulation of BookVault. Add, edit, delete books and trigger all validations in real time.</p>
+
+  <div class="guide-wrap">
+    <div class="guide-card">
+      <div class="guide-step">TRY 01</div>
+      <h4>Add a Book</h4>
+      <p>Click "+ Add Book" and fill in the form with valid data to add a book to the list.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-step">TRY 02</div>
+      <h4>Trigger Validation</h4>
+      <p>Submit with an empty title, or pick a future date — watch real-time errors appear.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-step">TRY 03</div>
+      <h4>Duplicate ISBN</h4>
+      <p>Add a book with ISBN <strong>9780132350884</strong> — it already exists and will be rejected.</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-step">TRY 04</div>
+      <h4>Edit & Delete</h4>
+      <p>Click "Edit" on any row to modify it, or "Delete" to trigger the custom confirmation modal.</p>
+    </div>
+  </div>
+
+  <!-- App Window -->
+  <div class="demo-wrapper">
+    <!-- Sidebar -->
+    <div class="demo-sidebar">
+      <div class="demo-brand"><span class="icon">📚</span>BookVault</div>
+      <div class="demo-nav">
+        <div class="demo-nav-item active">📖 Library</div>
+        <div class="demo-nav-item">♡ Favourites</div>
+        <div class="demo-nav-item">⚙ Settings</div>
+      </div>
+      <div class="demo-sidebar-footer">
+        <div class="count" id="bookCount">3</div>
+        <div class="label">Total Books</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="demo-main">
+      <div class="demo-header">
+        <div>
+          <h2>My Library</h2>
+          <p>Manage and organize your book collection</p>
+        </div>
+        <button class="demo-add-btn" onclick="toggleForm()">+ Add Book</button>
+      </div>
+
+      <!-- Add / Edit Form -->
+      <div class="demo-form-panel" id="formPanel">
+        <div class="form-panel-header">
+          <h4 id="formTitle">Add New Book</h4>
+          <button class="form-close" onclick="closeForm()">✕</button>
+        </div>
+        <div class="form-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title *</label>
+              <input type="text" class="form-input" id="inputTitle" placeholder="Enter book title" oninput="clearError('titleError','inputTitle')"/>
+              <span class="form-error" id="titleError"></span>
+            </div>
+            <div class="form-group">
+              <label>Author *</label>
+              <input type="text" class="form-input" id="inputAuthor" placeholder="Enter author name" oninput="clearError('authorError','inputAuthor')"/>
+              <span class="form-error" id="authorError"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>ISBN</label>
+              <input type="text" class="form-input" id="inputIsbn" placeholder="e.g. 9780132350884" oninput="clearError('isbnError','inputIsbn')"/>
+              <span class="form-error" id="isbnError"></span>
+            </div>
+            <div class="form-group">
+              <label>Publication Date</label>
+              <input type="date" class="form-input" id="inputDate" oninput="clearError('dateError','inputDate')"/>
+              <span class="form-error" id="dateError"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+            <button class="btn-submit" onclick="submitBook()">Add to Library</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Books Table -->
+      <div class="books-area">
+        <div class="books-table-header">
+          <h3>All Books</h3>
+          <input type="text" class="search-box" placeholder="🔍 Search books..." oninput="searchBooks(this.value)"/>
+        </div>
+        <table class="books-table" id="booksTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>ISBN</th>
+              <th>Published</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="booksBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── STACK ── -->
+<section id="stack">
+  <div class="section-label">Tech Stack</div>
+  <h2 class="section-title">What I used and why</h2>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <h3>⚡ Frontend</h3>
+      <div class="stack-item"><span class="name">Angular 17</span><span class="purpose">Standalone component architecture</span></div>
+      <div class="stack-item"><span class="name">TypeScript</span><span class="purpose">Strict type safety throughout</span></div>
+      <div class="stack-item"><span class="name">RxJS</span><span class="purpose">Reactive HTTP & async streams</span></div>
+      <div class="stack-item"><span class="name">CSS3 (Custom)</span><span class="purpose">Zero framework dependency</span></div>
+      <div class="stack-item"><span class="name">Angular FormsModule</span><span class="purpose">Real-time reactive validation</span></div>
+    </div>
+    <div class="stack-card">
+      <h3>🛠 Backend</h3>
+      <div class="stack-item"><span class="name">ASP.NET Core 8</span><span class="purpose">Web API with controller routing</span></div>
+      <div class="stack-item"><span class="name">C#</span><span class="purpose">Strongly typed services & models</span></div>
+      <div class="stack-item"><span class="name">Swagger / OpenAPI</span><span class="purpose">Interactive API documentation</span></div>
+      <div class="stack-item"><span class="name">In-Memory Store</span><span class="purpose">Fast, zero-config data layer</span></div>
+      <div class="stack-item"><span class="name">CORS Policy</span><span class="purpose">Secure cross-origin configuration</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with 💜 using <strong>Angular 17</strong> &amp; <strong>ASP.NET Core</strong> · BookVault Full-Stack Project · 2025
+</footer>
+
+<script>
+  // ── State ──
+  let books = [
+    { id: 1, title: 'Clean Code', author: 'Robert C. Martin', isbn: '9780132350884', date: '2008-08-01' },
+    { id: 2, title: 'The Pragmatic Programmer', author: 'Andrew Hunt, David Thomas', isbn: '9780201616224', date: '1999-10-30' },
+    { id: 3, title: 'You Don\'t Know JS', author: 'Kyle Simpson', isbn: '9781491904244', date: '2015-12-27' },
+  ];
+  let nextId = 4;
+  let editingId = null;
+  let deleteTargetId = null;
+  let searchQuery = '';
+
+  // ── Render ──
+  function renderBooks() {
+    const body = document.getElementById('booksBody');
+    const q = searchQuery.toLowerCase();
+    const filtered = books.filter(b =>
+      b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)
+    );
+
+    if (filtered.length === 0) {
+      body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:32px;font-size:13px;">No books found.</td></tr>`;
+    } else {
+      body.innerHTML = filtered.map(b => `
+        <tr id="row-${b.id}">
+          <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;">${b.id}</td>
+          <td>
+            <div class="book-title-cell">
+              <div class="book-icon">📘</div>
+              <span>${b.title}</span>
+            </div>
+          </td>
+          <td>${b.author}</td>
+          <td><span class="isbn-mono">${b.isbn || '—'}</span></td>
+          <td>${formatDate(b.date)}</td>
+          <td>
+            <div class="action-btns">
+              <button class="btn-edit" onclick="editBook(${b.id})">✏ Edit</button>
+              <button class="btn-delete" onclick="askDelete(${b.id}, '${b.title.replace(/'/g, "\\'")}')">🗑 Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('bookCount').textContent = books.length;
+  }
+
+  function formatDate(d) {
+    if (!d) return '—';
+    const dt = new Date(d + 'T00:00:00');
+    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ── Form ──
+  function toggleForm() {
+    editingId = null;
+    clearForm();
+    document.getElementById('formTitle').textContent = 'Add New Book';
+    document.querySelector('.btn-submit').textContent = 'Add to Library';
+    document.getElementById('formPanel').classList.toggle('open');
+  }
+
+  function closeForm() {
+    document.getElementById('formPanel').classList.remove('open');
+    clearForm();
+    editingId = null;
+  }
+
+  function clearForm() {
+    ['inputTitle','inputAuthor','inputIsbn','inputDate'].forEach(id => {
+      document.getElementById(id).value = '';
+      document.getElementById(id).classList.remove('error');
+    });
+    ['titleError','authorError','isbnError','dateError'].forEach(id => {
+      document.getElementById(id).textContent = '';
+      document.getElementById(id).classList.remove('show');
+    });
+  }
+
+  function clearError(errId, inputId) {
+    document.getElementById(errId).classList.remove('show');
+    document.getElementById(inputId).classList.remove('error');
+  }
+
+  function showError(errId, inputId, msg) {
+    const e = document.getElementById(errId);
+    e.textContent = msg;
+    e.classList.add('show');
+    document.getElementById(inputId).classList.add('error');
+  }
+
+  function submitBook() {
+    const title = document.getElementById('inputTitle').value.trim();
+    const author = document.getElementById('inputAuthor').value.trim();
+    const isbn = document.getElementById('inputIsbn').value.trim();
+    const date = document.getElementById('inputDate').value;
+
+    let valid = true;
+
+    if (!title) { showError('titleError','inputTitle','Title is required.'); valid = false; }
+    else if (title.length > 200) { showError('titleError','inputTitle','Title must be under 200 characters.'); valid = false; }
+
+    if (!author) { showError('authorError','inputAuthor','Author is required.'); valid = false; }
+
+    if (isbn) {
+      const duplicate = books.find(b => b.isbn === isbn && b.id !== editingId);
+      if (duplicate) {
+        showError('isbnError','inputIsbn',`ISBN already exists (Book #${duplicate.id}: "${duplicate.title}").`);
+        valid = false;
+      }
+    }
+
+    if (date) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const selected = new Date(date + 'T00:00:00');
+      if (selected > today) {
+        showError('dateError','inputDate','Publication date cannot be in the future.');
+        valid = false;
+      }
+    }
+
+    if (!valid) {
+      showToast('Please fix the errors before submitting.', 'error');
+      return;
+    }
+
+    if (editingId !== null) {
+      const idx = books.findIndex(b => b.id === editingId);
+      books[idx] = { id: editingId, title, author, isbn, date };
+      showToast(`"${title}" updated successfully.`, 'success');
+      editingId = null;
+    } else {
+      const newBook = { id: nextId++, title, author, isbn, date };
+      books.push(newBook);
+      renderBooks();
+      setTimeout(() => {
+        const row = document.getElementById(`row-${newBook.id}`);
+        if (row) row.classList.add('row-new');
+      }, 50);
+      showToast(`"${title}" added to your library!`, 'success');
+      closeForm();
+      return;
+    }
+
+    renderBooks();
+    closeForm();
+  }
+
+  function editBook(id) {
+    const b = books.find(b => b.id === id);
+    if (!b) return;
+    editingId = id;
+    document.getElementById('inputTitle').value = b.title;
+    document.getElementById('inputAuthor').value = b.author;
+    document.getElementById('inputIsbn').value = b.isbn;
+    document.getElementById('inputDate').value = b.date;
+    document.getElementById('formTitle').textContent = 'Edit Book';
+    document.querySelector('.btn-submit').textContent = 'Save Changes';
+    document.getElementById('formPanel').classList.add('open');
+    document.getElementById('formPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── Delete ──
+  function askDelete(id, title) {
+    deleteTargetId = id;
+    document.getElementById('modalBookTitle').textContent = `Remove "${title}" from your library? This cannot be undone.`;
+    document.getElementById('deleteModal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('deleteModal').classList.remove('open');
+    deleteTargetId = null;
+  }
+
+  function confirmDelete() {
+    if (deleteTargetId === null) return;
+    const b = books.find(b => b.id === deleteTargetId);
+    books = books.filter(b => b.id !== deleteTargetId);
+    closeModal();
+    renderBooks();
+    if (b) showToast(`"${b.title}" deleted.`, 'error');
+  }
+
+  // ── Search ──
+  function searchBooks(q) {
+    searchQuery = q;
+    renderBooks();
+  }
+
+  // ── Toast ──
+  function showToast(msg, type = 'success') {
+    const c = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.innerHTML = `<div class="toast-dot"></div><span>${msg}</span>`;
+    c.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.4s'; setTimeout(() => t.remove(), 400); }, 3000);
+  }
+
+  // ── Init ──
+  renderBooks();
+</script>
+</body>
+</html>
